@@ -91,16 +91,28 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# ⚠️ Désactiver la redirection forcée HTTPS
+SECURE_SSL_REDIRECT = False
+
+# ✅ Indiquer à Django qu'il est derrière un proxy qui gère HTTPS
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# ✅ Activer HSTS uniquement si HTTPS fonctionne bien
+
+
+
 # 🔒 Sécurité HTTP
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_SSL_REDIRECT = True  # Force l'utilisation de HTTPS
+SECURE_SSL_REDIRECT = False  # Force l'utilisation de HTTPS
 SESSION_COOKIE_SECURE = True  # Sécurise les cookies
 CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'  # Empêche l'intégration en iframe
 SECURE_HSTS_SECONDS = 31536000  # Active HSTS pour un an
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
-
+USE_X_FORWARDED_HOST = True
 # 📌 Clé par défaut pour les modèles
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
