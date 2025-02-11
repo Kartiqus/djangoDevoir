@@ -1,0 +1,77 @@
+{% extends '../components/base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <h2 class="text-2xl sm:text-3xl font-semibold text-green-600 mb-6">Liste des Commandes</h2>
+
+  <a href="{% url 'creer_commande' %}"
+     class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-full mb-6 inline-block transition duration-300 ease-in-out text-sm sm:text-base">
+    Nouvelle Commande
+  </a>
+
+  <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    {% for commande in commandes %}
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800">{{ commande.plat.nom }}</h3>
+          <span class="px-2 py-1 text-xs font-semibold rounded-full
+            {% if commande.status_commande == 'en_attente' %}bg-yellow-200 text-yellow-800
+            {% elif commande.status_commande == 'en_cours' %}bg-blue-200 text-blue-800
+            {% elif commande.status_commande == 'terminee' %}bg-green-200 text-green-800
+            {% else %}bg-red-200 text-red-800{% endif %}">
+            {{ commande.get_status_commande_display }}
+          </span>
+        </div>
+        <div class="mb-4">
+          {% if commande.plat.image %}
+          <img src="{{ commande.plat.image.url }}" alt="Aperçu de {{ commande.plat.nom }}" class="w-full h-48 object-cover rounded-lg">
+          {% else %}
+          <div class="w-full h-48 bg-gray-200 flex items-center justify-center rounded-lg">
+            <span class="text-gray-400">Pas d'image</span>
+          </div>
+          {% endif %}
+        </div>
+        <div class="text-sm text-gray-600 mb-2">{{ commande.plat.description|truncatechars:100 }}</div>
+        <div class="text-sm text-gray-600 mb-2">Catégorie: {{ commande.plat.categorie.nom }}</div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium">Quantité:</span>
+          <span class="text-sm">{{ commande.quantite }}</span>
+        </div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium">Total:</span>
+          <span class="text-sm font-bold">{{ commande.montant_total }} FCFA</span>
+        </div>
+        <div class="text-xs text-gray-500 mb-2">Prix unitaire: {{ commande.plat.prix }} FCFA</div>
+        <div class="mb-2">
+          <span class="text-sm font-medium">Client:</span>
+          <span class="text-sm">{{ commande.client.nom }}</span>
+        </div>
+        <div class="text-xs text-gray-500 mb-2">
+          {% if commande.client.telephone %}Tél: {{ commande.client.telephone }}{% endif %}
+          {% if commande.client.email %}<br>Email: {{ commande.client.email }}{% endif %}
+        </div>
+        <div class="text-xs text-gray-500 mb-2">
+          Date: {{ commande.date_commande|date:"d/m/Y H:i" }}
+        </div>
+        <div class="text-xs font-semibold mb-2">
+          {% if commande.status_livraison %}
+          <span class="text-blue-500">Sur place</span>
+          {% else %}
+          <span class="text-green-500">Livrée</span>
+          {% endif %}
+        </div>
+      </div>
+      <div >
+        
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-span-full text-center p-4 sm:p-6 text-gray-500">
+      Aucune commande enregistrée.
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

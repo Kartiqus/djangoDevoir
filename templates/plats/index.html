@@ -1,0 +1,65 @@
+{% extends '../components/base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <h2 class="text-2xl sm:text-3xl font-semibold text-green-600 mb-6">Liste des Plats Disponibles</h2>
+
+  <a href="{% url 'creer_plat' %}"
+     class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 rounded-full mb-6 inline-block transition duration-300 ease-in-out text-sm sm:text-base">
+    Nouveau Plat
+  </a>
+
+  <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    {% for plat in plats %}
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <div class="p-4">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800">{{ plat.nom }}</h3>
+          <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-200 text-green-800">
+            En stock: {{ plat.stock }}
+          </span>
+        </div>
+        <div class="mb-4">
+          {% if plat.image %}
+          <img src="{{ plat.image.url }}" alt="{{ plat.nom }}" class="w-full h-48 object-cover rounded-lg">
+          {% else %}
+          <div class="w-full h-48 bg-gray-200 flex items-center justify-center rounded-lg">
+            <span class="text-gray-400">Pas d'image</span>
+          </div>
+          {% endif %}
+        </div>
+        <div class="text-sm text-gray-600 mb-2">{{ plat.description|truncatechars:100 }}</div>
+        <div class="text-sm text-gray-600 mb-2">Catégorie: {{ plat.categorie.nom }}</div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium">Prix:</span>
+          <span class="text-sm font-bold">{{ plat.prix }} FCFA</span>
+        </div>
+        {% if plat.ingredients %}
+        <div class="text-xs text-gray-500 mb-2">
+          Ingrédients: {{ plat.ingredients|truncatechars:50 }}
+        </div>
+        {% endif %}
+        {% if plat.temps_preparation %}
+        <div class="text-xs text-gray-500 mb-2">
+          Temps de préparation: {{ plat.temps_preparation }} minutes
+        </div>
+        {% endif %}
+        {% if plat.calories %}
+        <div class="text-xs text-gray-500 mb-2">
+          Calories: {{ plat.calories }} kcal
+        </div>
+        {% endif %}
+      </div>
+      <div>
+        
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-span-full text-center p-4 sm:p-6 text-gray-500">
+      Aucun plat disponible actuellement.
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

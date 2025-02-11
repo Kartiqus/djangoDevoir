@@ -1,0 +1,101 @@
+{% extends '../components/base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold text-green-600 mb-6 text-center">Nouvelle Commande</h2>
+
+  {% if messages %}
+  <div class="mb-4">
+    {% for message in messages %}
+    <div class="bg-red-500 text-white p-3 rounded-md shadow-md animate__animated animate__fadeIn">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <form method="POST" class="bg-white p-6 shadow-lg rounded-lg max-w-lg mx-auto space-y-6 animate__animated animate__fadeIn">
+    {% csrf_token %}
+
+    <div class="flex flex-col">
+      <label class="block mb-2 text-sm font-semibold text-gray-700">Nom du Client :</label>
+      <input
+        type="text"
+        name="client_nom"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+        required
+      />
+    </div>
+
+    <div class="flex flex-col">
+      <label class="block mb-2 text-sm font-semibold text-gray-700">Plat :</label>
+      <select
+        name="plat"
+        id="plat-select"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+        required
+        onchange="updatePreview()"
+      >
+        <option value="" data-image="">Sélectionnez un plat</option>
+        {% for plat in plats %}
+        <option value="{{ plat.id }}" data-image="{{ plat.image.url }}">
+          {{ plat.nom }} ({{ plat.prix }} FCFA) - Stock: {{ plat.stock }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div id="preview-container" class="mb-4 hidden">
+      <p class="text-sm font-semibold text-gray-700">Aperçu du plat :</p>
+      <img
+        id="plat-preview"
+        src=""
+        alt="Aperçu"
+        class="w-32 h-32 object-cover rounded border"
+      />
+    </div>
+
+    <div class="flex flex-col">
+      <label class="block mb-2 text-sm font-semibold text-gray-700">Quantité :</label>
+      <input
+        type="number"
+        name="quantite"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+        min="1"
+        required
+      />
+    </div>
+
+    <div class="flex items-center mb-6">
+      <input type="checkbox" name="status_livraison" class="mr-2">
+      <span class="text-sm font-semibold text-gray-700">Commande sur place ?</span>
+    </div>
+
+    <div class="flex justify-center">
+      <button
+        type="submit"
+        class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
+      >
+        Enregistrer la Commande
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function updatePreview() {
+    var select = document.getElementById("plat-select");
+    var previewContainer = document.getElementById("preview-container");
+    var previewImage = document.getElementById("plat-preview");
+
+    var selectedOption = select.options[select.selectedIndex];
+    var imageUrl = selectedOption.getAttribute("data-image");
+
+    if (imageUrl) {
+      previewImage.src = imageUrl;
+      previewContainer.classList.remove("hidden");
+    } else {
+      previewContainer.classList.add("hidden");
+    }
+  }
+</script>
+
+{% endblock %}

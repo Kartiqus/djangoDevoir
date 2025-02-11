@@ -1,0 +1,48 @@
+{% extends 'components/base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold text-green-600 mb-4">Liste des Plats Disponibles</h2>
+
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg mt-4">
+        <table class="w-full border-collapse border border-gray-300">
+            <thead class="bg-green-500 text-white">
+                <tr>
+                    <th class="p-2 border">Plat</th>
+                    <th class="p-2 border">Description</th>
+                    <th class="p-2 border">Prix</th>
+                    <th class="p-2 border">Stock</th>
+                    <th class="p-2 border">Aperçu</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plat in plats %}
+                <tr class="bg-gray-100 hover:bg-gray-200">
+                    <td class="p-2 border">{{ plat.nom }}</td>
+                    <td class="p-2 border">{{ plat.description }}</td>
+                    <td class="p-2 border">{{ plat.prix }} FCFA</td>
+                    <td class="p-2 border">{{ plat.stock }}</td>
+                    <td class="p-2 border flex items-center justify-center" >
+                        {% if plat.image %}
+                        <img 
+                            src="{{ plat.image.url }}" 
+                            alt="Aperçu du plat" 
+                            class="w-32 h-32 object-cover rounded transition-transform duration-300 hover:scale-110"
+                        />
+                        {% else %}
+                        <span class="text-gray-500">Pas d'image</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center p-4 text-gray-500">
+                        Aucun plat disponible.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
