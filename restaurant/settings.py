@@ -115,4 +115,4 @@ SECURE_HSTS_PRELOAD = True
 USE_X_FORWARDED_HOST = True
 # 📌 Clé par défaut pour les modèles
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+WHITENOISE_KEEP_ONLY_HASHED_FILES = False
