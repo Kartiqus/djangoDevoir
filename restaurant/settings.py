@@ -11,11 +11,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8_dj-dl-h)dvkx$)m)4ay$*5_kbb0s5kjso@fuc9nb)4uvuqki'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
-
+CSRF_TRUSTED_ORIGINS = ["https://devoirdjango.up.railway.app"]
 # Application definition
 
 INSTALLED_APPS = [
